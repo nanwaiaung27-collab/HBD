@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Teacher!</title>
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1c29 0%, #2e335a 50%, #5d4a66 100%);
+            font-family: 'Pyidaungsu', 'Myanmar Text', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Cakes & Emojis Background Animation */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-item {
+            position: absolute;
+            bottom: -60px;
+            font-size: 30px;
+            animation: floatUp 5s infinite linear;
+            opacity: 0.85;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Surprise Gift Box Initial Screen */
+        .surprise-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 25, 0.95);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .surprise-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(1.3);
+        }
+
+        .gift-box {
+            font-size: 95px;
+            animation: bounceGift 1.2s infinite alternate;
+            filter: drop-shadow(0 0 25px rgba(255, 107, 107, 0.8));
+        }
+
+        .surprise-text {
+            color: #ffffff;
+            font-size: 24px;
+            margin-top: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            animation: pulseText 1.2s infinite;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        @keyframes bounceGift {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-25px) scale(1.15); }
+        }
+
+        @keyframes pulseText {
+            0%, 100% { opacity: 0.6; transform: scale(0.98); }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+
+        /* Main Greeting Card */
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            max-width: 480px;
+            width: 90%;
+            position: relative;
+            z-index: 5;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .card.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Staggered Line Animation inside Card */
+        .card > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .card.show .emoji {
+            transition-delay: 0.3s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show h1 {
+            transition-delay: 0.5s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show p.line-1 {
+            transition-delay: 0.7s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show p.line-2 {
+            transition-delay: 1.1s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show p.line-3 {
+            transition-delay: 1.5s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show p.line-4 {
+            transition-delay: 1.9s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.show .footer-container {
+            transition-delay: 2.3s;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card h1 {
+            color: #ff3366;
+            font-size: 26px;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card .emoji {
+            font-size: 48px;
+            margin-bottom: 15px;
+            animation: bounceEmoji 2s infinite;
+        }
+
+        .card p {
+            color: #444444;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .footer-container {
+            border-top: 1px solid #eeeeee;
+            padding-top: 15px;
+            margin-top: 10px;
+        }
+
+        .footer-note {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ff3366;
+            display: inline-block;
+        }
+
+        @keyframes bounceEmoji {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-12px); }
+            60% { transform: translateY(-6px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Cakes Background Animation -->
+    <div class="floating-elements" id="floatingElements"></div>
+
+    <!-- Surprise Gift Box Overlay Screen -->
+    <div class="surprise-overlay" id="surpriseOverlay" onclick="openSurprise()">
+        <div class="gift-box">🎁</div>
+        <div class="surprise-text">✨ တီချယ့်လက်ဆောင်ပုံးလေးကို နှိပ်ဖွင့်ပါ ✨</div>
+    </div>
+
+    <!-- Main Card Container with Staggered Lines -->
+    <div class="card" id="mainCard">
+        <div class="emoji">🎉🎂💐</div>
+        <h1>"တော်လှန်မွေးနေ့ပါတီချယ်"</h1>
+        <p class="line-1">ချစ်လှစွာသော တီချယ်...</p>
+        <p class="line-2">ဒီနေ့ကျရောက်တဲ့ မွေးနေ့ကစပြီး ကိုယ်စိတ်နှစ်ပါး ကျန်းမာရွှင်လန်းပြီး ရည်မှန်းချက်တွေ အားလုံး အောင်မြင်ပြည့်ဝပါစေလို့ ဆုတောင်းမေတ္တာ ပို့သအပ်ပါလိုက်ပါပြီတီချယ် တီချယ်ပေးခဲ့တဲ့ အသိပညာတွေအတွက် ကျေးဇူးအထူးတင်ပါတယ်ဗျ။</p>
+        <p class="line-3">သားတို့ကိုဒီထက်ပိုပြီး သွန်သင်ဆုံးမပေးနိုင်အောင်နှစ်တွေအများ ကျန်းကျန်းမာမာရှိနေနိုင်ပါစေတီချယ်</p>
+        <p class="line-4">ယခုကျရောက်တဲ့ မွေးနေ့ကစပြီးနောက်နှစ်တွေအများပြီး ကျန်းကျန်းမာမာနဲ့ဖြတ်သွားနိုင်ပါစေလို့ဆုတောင်းပေးလိုက်ပါတယ်တီချယ်</p>
+        <div class="footer-container">
+            <span class="footer-note">❤️ ချယ်ရဲ့သားလေး နိုင်းနိုင်း ❤️</span>
+        </div>
+    </div>
+
+    <script>
+        // Dynamic Floating Cakes & Emojis Generator
+        const cakeIcons = ['🎂', '🍰', '🧁', '🎈', '💖', '✨', '🎁', '🎉'];
+        const container = document.getElementById('floatingElements');
+
+        function createFloatingCake() {
+            const item = document.createElement('div');
+            item.classList.add('floating-item');
+            item.style.left = Math.random() * 100 + 'vw';
+            item.style.animationDuration = (Math.random() * 3 + 3.5) + 's';
+            item.style.fontSize = (Math.random() * 22 + 22) + 'px';
+            item.innerHTML = cakeIcons[Math.floor(Math.random() * cakeIcons.length)];
+            container.appendChild(item);
+
+            setTimeout(() => {
+                item.remove();
+            }, 6500);
+        }
+
+        // Generate floating cakes continuously
+        setInterval(createFloatingCake, 350);
+
+        // Open Surprise & Trigger Fireworks
+        function openSurprise() {
+            const overlay = document.getElementById('surpriseOverlay');
+            const card = document.getElementById('mainCard');
+
+            overlay.classList.add('hidden');
+            card.classList.add('show');
+
+            // Trigger Massive Confetti Fireworks Animation
+            var duration = 4.5 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0 },
+                    colors: ['#ff3366', '#ffcc00', '#ffffff', '#ff66b2']
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1 },
+                    colors: ['#ff3366', '#ffcc00', '#ffffff', '#ff66b2']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
